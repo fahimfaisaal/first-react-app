@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Profile from '../components/Profile/Profile';
+import Skills from '../components/Profile/Skills';
+
 
 class App extends Component {
 
@@ -7,6 +9,12 @@ class App extends Component {
         return (
             <>
                 <Profile />
+                <div className="container">
+                    <h3>Lists of programmers: </h3>
+                    <Skills />
+                    <Skills />
+                    <Skills />
+                </div>
             </>
         )
     }
