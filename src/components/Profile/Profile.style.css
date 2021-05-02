@@ -1,0 +1,53 @@
+.container {
+  width: 50vh;
+
+  margin: 2rem auto;
+  background-color: gray;
+  padding: 1.5em 2em;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+.bio > h3 {
+  font-size: 3em;
+  color: #9f9f9f;
+}
+
+p {
+  font-size: 1.2em;
+  font-family: sans-serif;
+}
+
+ul {
+  display: flex;
+  justify-content: space-around;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+
+  font-weight: bold;
+}
+
+.skills {
+  margin-top: 1.5em;
+}
+
+.skills > h4 {
+  font-size: 1.2em;
+  color: #473d3d;
+}
+
+.skills > ul {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.skills > ul > li {
+  background: #fff;
+  padding: 0.2em 0.3em;
+  border-radius: 0.3em;
+}
