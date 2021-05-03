@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-import Profile from './Profile/Profile';
+import Parent from './Parent';
 
 class App extends Component {
 
     render() {
         return (
             <>
-                <Profile />
-                {/* <div className="container">
-                    <h3 style={{
-                        marginBottom: '10px'
-                    }}>List of Programmers: </h3>
-                    <MyComponent name='fahim faisal'/>
-                    <MyComponent name='Abdullah Turky'/>
-                    <MyComponent name='Ashraful Islam'/>
-                </div> */}
+                <Parent />
             </>
         )
     }
