@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import MyComponent from './myComponent/myComponent';
 import Profile from './Profile/Profile';
 
 class App extends Component {
@@ -8,14 +7,14 @@ class App extends Component {
         return (
             <>
                 <Profile />
-                <div className="container">
+                {/* <div className="container">
                     <h3 style={{
                         marginBottom: '10px'
                     }}>List of Programmers: </h3>
                     <MyComponent name='fahim faisal'/>
                     <MyComponent name='Abdullah Turky'/>
                     <MyComponent name='Ashraful Islam'/>
-                </div>
+                </div> */}
             </>
         )
     }

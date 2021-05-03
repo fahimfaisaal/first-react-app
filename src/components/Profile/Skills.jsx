@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Skills = _ => (
+const Skills = props => (
     <div className="skills">
     <h4>Skills: </h4>
         <ul>
-            <li>javaScript</li>
-            <li>java</li>
-            <li>C</li>
+            <li>{ props.skillA }</li>
+            <li>{ props.skillB }</li>
+            <li>{ props.skillC }</li>
         </ul>
     </div>
 )
