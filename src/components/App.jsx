@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import Parent from './Parent';
+import Display from './Timer/Display/Display';
 
 class App extends Component {
 
     render() {
         return (
             <>
-                <Parent />
+                <Display />
             </>
         )
     }
