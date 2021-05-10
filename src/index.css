@@ -16,4 +16,81 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+
+  font-size: 1.2em;
+}
+
+#root {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+.timer {
+  overflow: hidden;
+}
+
+.timer-display {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 2em;
+  margin: 1.5em 0;
+}
+
+.timer__display {
+  background: #95a5a6;
+  flex-grow: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer__heading {
+  text-transform: uppercase;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+button.timer__increment {
+  background: #2ecc71;
+}
+
+button.timer__decrement {
+  background: #e74c3c;
+}
+
+.timer__controller {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timer__reset {
+  background: #e74c3c;
+}
+
+.timer__pause {
+  background: #f1c40f;
+}
+
+.timer__start {
+  background: #3498db;
+}
+
+.btn {
+  border: 0.2em solid inherit;
+  cursor: pointer;
+  padding: 1em 1.5em;
+  color: #fff;
+
+  border-radius: 0.2em;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: capitalize;
+
+  transition: all 250ms ease;
+}
+
+.btn:hover {
+  color: #000;
 }
