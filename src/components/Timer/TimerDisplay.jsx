@@ -6,13 +6,13 @@ const $ = el => document.querySelector(el);
 class TimerDisplay extends Component {
     state = {
         minute: 0,
-        second: 0
+        second: 0,
+        milliseconds: 250
     }
 
     intervalID = null;
     totalTime = 0;
     isPaused = false;
-
     
     toggleDisplay(increaseDecrease) {
         const display = $(".timer__display");
@@ -41,33 +41,42 @@ class TimerDisplay extends Component {
     }
 
     decrement = () => {
-        const { second, minute } = this.state;
+        let { second, minute, milliseconds } = this.state;
 
         if (second === 0 && minute === 0) {
             return undefined;
         }
 
-        let decrementSecond = second - 1;
-        let decrementMinute = minute;
+        this.intervalID && this.setState({
+            milliseconds: milliseconds - 1
+        });
 
-        if (decrementSecond === -1) {
-            decrementSecond = 59
-            decrementMinute--
-        }
+        if (milliseconds === 0 || !this.intervalID) {
+            let decrementSecond = second - 1;
+            let decrementMinute = minute;
 
-        this.setState({
-            second: decrementSecond,
-            minute: decrementMinute
-        }, () => {
-            if (this.state.minute === 0 && this.state.second === 0) {
-                this.toggleDisplay('1');
-                this.clearInterval();
-                this.isPaused = false;
-                
-                $(".timer__indicator-bar").classList.remove("fill-bar");
-                $(".timer__indicator-bar").style.transform = 'scaleX(0)'
+            if (decrementSecond === -1) {
+                decrementSecond = 59
+                decrementMinute--
             }
-        })
+
+            this.setState({
+                second: decrementSecond,
+                minute: decrementMinute
+            }, () => {
+                if (this.state.minute === 0 && this.state.second === 0) {
+                    this.toggleDisplay('1');
+                    this.clearInterval();
+                    this.isPaused = false;
+
+                    $(".timer__indicator-bar").classList.remove("fill-bar");
+                }
+            })
+
+            this.intervalID && this.setState({
+                milliseconds: 250
+            })
+        }
     }
 
     clearInterval = () => {        
@@ -78,7 +87,6 @@ class TimerDisplay extends Component {
     start = () => {
         if (!this.isPaused) {
             this.totalTime = (this.state.minute * 60) + this.state.second
-            $(".timer__indicator-bar").style.transform = 'scaleX(1)';
         }
         
         if ((this.state.second > 0 || this.state.minute > 0) && !this.intervalID) {
@@ -89,7 +97,7 @@ class TimerDisplay extends Component {
             
             this.intervalID = setInterval(() => {
                 this.decrement();
-            }, 1000)
+            }, 1)
         }
     }
 
@@ -97,20 +105,23 @@ class TimerDisplay extends Component {
         if (this.intervalID) {
             this.isPaused = true;
             this.clearInterval();
+            
             $(".timer__indicator-bar").style.animationPlayState = "paused";
         }
     }
 
     reset = () => {
         this.toggleDisplay('1');
+        
         this.totalTime = 0;
-        $(".timer__indicator-bar").classList.remove('fill-bar');
         this.isPaused = false;
-
+        
         this.setState({
             minute: 0,
             second: 0
         }, this.clearInterval)
+
+        $(".timer__indicator-bar").classList.remove('fill-bar');
     }
 
     render() {
@@ -123,7 +134,7 @@ class TimerDisplay extends Component {
 
                     <div className="timer__display">
                         <code>
-                            <span className="timer__Minute">{ minute < 10 ? '0' + minute : minute }</span> : <span className="timer__second">{ second < 10 ? '0' + second : second }</span>
+                            <span className="timer__minute">{ minute < 10 ? '0' + minute : minute }</span> : <span className="timer__second">{ second < 10 ? '0' + second : second }</span>
                         </code>
 
                         <div className="timer__indicator-bar"></div>
