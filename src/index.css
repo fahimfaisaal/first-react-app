@@ -29,6 +29,12 @@ code {
 .timer {
   overflow: hidden;
   transform: scale(1.5);
+  padding: 2em 2em;
+
+  border: 2px solid #1abc9c;
+  border-radius: 0.5em;
+  background: #dfe6e9;
+  box-shadow: 0 0 1em 0.05em rgba(0, 0, 0, 0.3);
 }
 
 .timer-display {
@@ -47,6 +53,8 @@ code {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
+  transition: transform 350ms ease;
 }
 
 .timer__heading {
@@ -107,7 +115,7 @@ button.timer__decrement {
 }
 
 .fill-bar {
-  animation: fillBar 1s linear;
+  animation: fillBar linear;
 }
 
 @keyframes fillBar {

@@ -65,11 +65,7 @@ class TimerDisplay extends Component {
                 minute: decrementMinute
             }, () => {
                 if (this.state.minute === 0 && this.state.second === 0) {
-                    this.toggleDisplay('1');
-                    this.clearInterval();
-                    this.isPaused = false;
-
-                    $(".timer__indicator-bar").classList.remove("fill-bar");
+                    this.reset();
                 }
             })
 
@@ -91,7 +87,9 @@ class TimerDisplay extends Component {
         
         if ((this.state.second > 0 || this.state.minute > 0) && !this.intervalID) {
             this.indicatorController();
+            
             $(".timer__indicator-bar").style.animationPlayState = "running";
+            $('.timer').style.borderColor = '#3498db';
             
             this.toggleDisplay('1.535');
             
@@ -107,19 +105,23 @@ class TimerDisplay extends Component {
             this.clearInterval();
             
             $(".timer__indicator-bar").style.animationPlayState = "paused";
+            $('.timer').style.borderColor = '#f1c40f'
         }
     }
 
     reset = () => {
         this.toggleDisplay('1');
-        
+
         this.totalTime = 0;
         this.isPaused = false;
         
         this.setState({
             minute: 0,
-            second: 0
+            second: 0,
+            milliseconds: 250
         }, this.clearInterval)
+        
+        $('.timer').style.borderColor = '#1abc9c';
 
         $(".timer__indicator-bar").classList.remove('fill-bar');
     }
