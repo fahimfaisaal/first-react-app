@@ -9,17 +9,17 @@ class TimerDisplay extends Component {
 
     intervalID = null;
 
-    increaseDecreaseDisplay(increaseDecrease) {
+    toggleDisplay(increaseDecrease) {
         const display = document.querySelector(".timer__display");
 
         display.style.transform = `scale(${increaseDecrease})`
     }
 
-    increment = _ => {
+    increment = () => {
         let incrementSecond = this.state.second + 10;
         let incrementMinute = this.state.minute
         
-        if (incrementSecond === 60) {
+        if (incrementSecond >= 60) {
             incrementSecond = 0;
             incrementMinute++;
         }
@@ -30,7 +30,7 @@ class TimerDisplay extends Component {
         })
     }
 
-    decrement = _ =>  {
+    decrement = () => {
         const { second, minute } = this.state;
 
         if (second === 0 && minute === 0) {
@@ -50,33 +50,34 @@ class TimerDisplay extends Component {
             minute: decrementMinute
         }, () => {
             if (this.state.minute === 0 && this.state.second === 0) {
-                this.increaseDecreaseDisplay('1');
+                this.toggleDisplay('1');
                 this.clearInterval();
             }
         })
-
     }
 
-    clearInterval = _ => {        
+    clearInterval = () => {        
         clearInterval(this.intervalID);
         this.intervalID = null;
     }
 
-    start = _ => {
-        if (this.state.second > 0 && !this.intervalID) {
-            this.increaseDecreaseDisplay('1.58');
-            this.intervalID = setInterval(_ => {
+    start = () => {
+        if ((this.state.second > 0  || this.state.minute > 0) && !this.intervalID) {
+            this.toggleDisplay('1.58');
+            
+            this.intervalID = setInterval(() => {
                this.decrement();
             }, 1000)
         }
     }
 
-    pause = _ => {
+    pause = () => {
         this.clearInterval();
     }
 
-    reset = _ => {
-        this.increaseDecreaseDisplay('1');
+    reset = () => {
+        this.toggleDisplay('1');
+
         this.setState({
             minute: 0,
             second: 0
