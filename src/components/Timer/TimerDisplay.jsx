@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Button from './Button/Button';
 
+const $ = el => document.querySelector(el);
+
 class TimerDisplay extends Component {
     state = {
         minute: 0,
@@ -8,11 +10,19 @@ class TimerDisplay extends Component {
     }
 
     intervalID = null;
+    totalTime = 0;
+    isPaused = false;
 
+    
     toggleDisplay(increaseDecrease) {
-        const display = document.querySelector(".timer__display");
+        const display = $(".timer__display");
 
         display.style.transform = `scale(${increaseDecrease})`
+    }
+
+    indicatorController() {
+        $(".timer__indicator-bar").classList.add("fill-bar");
+        $(".timer__indicator-bar").style.animationDuration = this.totalTime + 's'
     }
 
     increment = () => {
@@ -52,6 +62,10 @@ class TimerDisplay extends Component {
             if (this.state.minute === 0 && this.state.second === 0) {
                 this.toggleDisplay('1');
                 this.clearInterval();
+                this.isPaused = false;
+                
+                $(".timer__indicator-bar").classList.remove("fill-bar");
+                $(".timer__indicator-bar").style.transform = 'scaleX(0)'
             }
         })
     }
@@ -62,21 +76,36 @@ class TimerDisplay extends Component {
     }
 
     start = () => {
-        if ((this.state.second > 0  || this.state.minute > 0) && !this.intervalID) {
-            this.toggleDisplay('1.58');
+        if (!this.isPaused) {
+            this.totalTime = (this.state.minute * 60) + this.state.second
+            $(".timer__indicator-bar").style.transform = 'scaleX(1)';
+        }
+        
+        if ((this.state.second > 0 || this.state.minute > 0) && !this.intervalID) {
+            this.indicatorController();
+            $(".timer__indicator-bar").style.animationPlayState = "running";
+            
+            this.toggleDisplay('1.535');
             
             this.intervalID = setInterval(() => {
-               this.decrement();
+                this.decrement();
             }, 1000)
         }
     }
 
     pause = () => {
-        this.clearInterval();
+        if (this.intervalID) {
+            this.isPaused = true;
+            this.clearInterval();
+            $(".timer__indicator-bar").style.animationPlayState = "paused";
+        }
     }
 
     reset = () => {
         this.toggleDisplay('1');
+        this.totalTime = 0;
+        $(".timer__indicator-bar").classList.remove('fill-bar');
+        this.isPaused = false;
 
         this.setState({
             minute: 0,
@@ -96,6 +125,8 @@ class TimerDisplay extends Component {
                         <code>
                             <span className="timer__Minute">{ minute < 10 ? '0' + minute : minute }</span> : <span className="timer__second">{ second < 10 ? '0' + second : second }</span>
                         </code>
+
+                        <div className="timer__indicator-bar"></div>
                     </div>
 
                     <Button title="-" modifierClass="timer__decrement" click={ this.decrement }/>

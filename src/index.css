@@ -28,6 +28,7 @@ code {
 
 .timer {
   overflow: hidden;
+  transform: scale(1.5);
 }
 
 .timer-display {
@@ -43,7 +44,8 @@ code {
   flex-grow: 1;
 
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -93,4 +95,27 @@ button.timer__decrement {
 
 .btn:hover {
   color: #000;
+}
+
+.timer__indicator-bar {
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  background: #341f97;
+
+  transform-origin: bottom left;
+}
+
+.fill-bar {
+  animation: fillBar 1s linear;
+}
+
+@keyframes fillBar {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
 }
