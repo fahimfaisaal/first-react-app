@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Display from './Timer/Display/Display';
-
+import Validation from './Validation/Validation';
 class App extends Component {
 
     render() {
         return (
             <>
-                <Display />
+                <Validation />
             </>
         )
     }
