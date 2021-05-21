@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import Validation from './Validation/Validation';
+// import Validation from './Validation/Validation';
+import SmartForm from './SmartForm/SmartForm';
 class App extends Component {
 
     render() {
         return (
-            <>
-                <Validation />
-            </>
+            <SmartForm />
         )
     }
 }
