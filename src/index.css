@@ -26,24 +26,56 @@ code {
   height: 100vh;
 }
 
-input {
+.form-control,
+select {
   border: 1px solid rgba(75, 67, 67, 0.5);
   border-radius: 5px;
   padding: 10px 15px;
   width: 100%;
 
   transition: transform 200ms ease;
-}
-
-input ~ input {
   margin-top: 10px;
 }
 
-input:focus {
+.form-control:focus {
   box-shadow: 0 0 5px 2px rgba(0, 154, 243, 0.5);
   transform: scaleX(1.05);
 }
 
+.form-container {
+  width: 40%;
+  padding: 50px 50px;
+  border: 3px solid #d3d0d0;
+  border-radius: 50px;
+}
+
+button {
+  border: none;
+  padding: 10px 15px;
+  margin-top: 15px;
+}
+
+.gender,
+.skills {
+  margin-top: 10px;
+}
+
+.radio {
+  margin-right: 3px;
+}
+
+.radio ~ .radio {
+  margin-left: 5px;
+}
+
 .greet {
   width: 50vw;
+}
+
+.terms {
+  margin-top: 20px;
+}
+
+.terms > input {
+  margin-right: 3px;
 }
