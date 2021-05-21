@@ -70,16 +70,16 @@ class Validation extends Component {
 
 
     charValidator(value, name, cb) {
-        const validSpecialCharObj = this.splitPassword(value, name, letter => cb(letter))
+        const validCharObj = this.splitPassword(value, name, letter => cb(letter))
 
-        const { length, [name]: validSpecialChar } = validSpecialCharObj
+        const { length, [name]: validChar } = validCharObj
 
         this.setState(prevState => ({
             ...prevState,
             splitPass: {
                 ...prevState.splitPass,
                 [name + 'Len']: length,
-                [name]: validSpecialChar
+                [name]: validChar
             }
         }))
     }
@@ -139,7 +139,7 @@ class Validation extends Component {
                     <br />
                     <Input type="text" placeHolder="Last name" name="lastName" value={ lastName } change={ this.handleOnChange }/>
                     <br />
-                    <Input type="mail" placeHolder="Gmail" name="mail" value={mail} blur={this.handleMail} change={ this.handleOnChangeMail }/>
+                    <Input type="email" placeHolder="Gmail" name="mail" value={mail} blur={this.handleMail} change={ this.handleOnChangeMail }/>
                     <br />
                     <Input type="password" placeHolder="Password" name="password" value={ password } change={ this.handlePassword } />
                 </div>
