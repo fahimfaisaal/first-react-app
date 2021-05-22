@@ -89,6 +89,20 @@ class SmartForm extends Component {
         }, () => !value && alert('Invalid Date!'))
     }
 
+    sObject(val) {
+        const type = typeof val;
+  
+        if (val === null) {
+            return false;
+        }
+        
+        if (type === 'object') {
+            return true
+        }
+        
+        return false
+    }
+
     resetObject(object) {
         const resetObj = {};
         
@@ -99,8 +113,8 @@ class SmartForm extends Component {
                         : typeof object[key] === 'bigint' ? 0n
                             : typeof object[key] === 'boolean' ? false
                                 : Array.isArray(object[key]) ? []
-                                    : typeof object[key] === 'object' ? this.resetObject(object[key])
-                                        : object[key]
+                                    : this.isObject(object[key]) ? this.resetObject(object[key])
+                                        : null
             );
         }
         
@@ -110,6 +124,7 @@ class SmartForm extends Component {
 
     render() {
         const { firstName, lastName, mail, birthDate, country, agree } = this.state;
+
         return (
             <form className="form-container" onSubmit={this.handleSubmit}>
                 <h1>Enter Your Details and get an Object</h1>
