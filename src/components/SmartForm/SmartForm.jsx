@@ -145,7 +145,7 @@ class SmartForm extends Component {
                 <Skills handleSkills={this.handleSkills} />
                 
                 <div className="terms">
-                    <input type="checkbox" name="terms" checked={ agree } onChange={this.handleTerms} />
+                    <input type="checkbox" name="terms" checked={agree} onChange={this.handleTerms} />
                     <label htmlFor="terms">I'm agree to all terms and condition</label>
                 </div>
                 <button type="submit">Submit</button>
