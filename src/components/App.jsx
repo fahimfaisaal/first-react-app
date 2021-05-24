@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 // import Validation from './Validation/Validation';
-import SmartForm from './SmartForm/SmartForm';
+// import SmartForm from './SmartForm/SmartForm';
+import SignUpForm from './SignUpForm/SignUpForm';
 class App extends Component {
 
     render() {
         return (
-            <SmartForm />
+            <SignUpForm />
         )
     }
 }
