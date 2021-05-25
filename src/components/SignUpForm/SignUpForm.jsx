@@ -7,11 +7,11 @@ class SignUpForm extends Component {
         values: {
             firstName: '',
             lastName: '',
-            gender: '',
             birthDate: '',
+            gender: '',
             country: '',
             phone: '',
-            email: '',
+            mail: '',
             password: '',
         },
         agreement: false,
@@ -48,19 +48,44 @@ class SignUpForm extends Component {
         })
     }
 
+    isValid = event => {
+        const value = event.target.value;
+        const name = event.target.name;
+
+        this.setState({
+            ...this.state,
+            values: {
+                ...this.state.values,
+                [name]: value
+            }
+        })
+
+        const immutableState = { ...this.state }
+        delete immutableState.errors[name];
+
+        this.setState({ immutableState })
+    }
+
+    notValid = event => {
+        const name = event.target.name;
+
+        this.setState({
+            ...this.state,
+            errors: {
+                ...this.state.errors,
+                [name]: `Invalid ${name}`
+            }
+        })
+    }
+
     handleMail = event => {
         const value = event.target.value;
         const regex = /^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/.test(value);
 
-       value && this.setState({
-            ...this.state,
-            values: {
-                ...this.state.values,
-                mail: regex ? value : ''
-            }
-        })
-
-
+        value && (
+            regex ? this.isValid(event)
+                : this.notValid(event)
+       )
     }
 
     handleDate = event => {
@@ -132,6 +157,7 @@ class SignUpForm extends Component {
                     handleChange={this.handleChange}
                     handleMail={this.handleMail}
                     handleBlur={this.handleBlur}
+                    agree={this.state.agreement}
                 />
             </div>
         )

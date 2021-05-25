@@ -12,7 +12,14 @@ const TextInput = props => (
             onBlur={props.handleBlur}
         />
         <label htmlFor={props.name}>{props.label}</label>
-        <i className={props.fontClass}></i>
+        
+        {props.fontClass && <i className={props.fontClass}></i>}
+
+        {props.errorMessage && (
+            <div className="error-block">
+                <p className="error-message">{ props.errorMessage }</p>
+            </div>
+        )}
     </div>
 )
 
@@ -21,6 +28,7 @@ TextInput.propTypes = {
     type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string.isRequired,
     inputClass: PropTypes.string,
     fontClass: PropTypes.string,
     handleChange: PropTypes.func.isRequired,
@@ -31,7 +39,8 @@ TextInput.defaultProps = {
     label: '',
     type: 'text',
     inputClass: '',
-    fontClass: ''
+    fontClass: '',
+    errorMessage: ''
 }
 
 export default TextInput;

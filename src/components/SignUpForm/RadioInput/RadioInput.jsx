@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 
 const RadioInput = props => (
-    <div className="radio-input">
+    <label className="radio-group">
         <input
             type="radio"
+            className="radio-input"
             name={props.name}
-            id={props.name}
+            id={props.value}
             value={props.value}
             onChange={props.onChange}
         />
-        <label htmlFor={props.name}>{props.label}</label>
-    </div>
+        <span htmlFor={props.value}>{props.label}</span>
+    </label>
 )
 
 RadioInput.propTypes = {
