@@ -10,7 +10,9 @@ class SignUpForm extends Component {
             birthDate: '',
             gender: '',
             country: '',
+            callingCode: '',
             phone: '',
+            zipCode: '',
             mail: '',
             password: '',
         },
@@ -18,15 +20,10 @@ class SignUpForm extends Component {
         errors: {}
     }
 
-    // handleBlur = event => {
-    //     const value = event.target.value;
-    //     const id = event.target.id;
-
-    // }
-
     handleChange = event => {
         const value = event.target.value;
         const type = event.target.type;
+        const numberTypeValidation = type === 'number' && value.length < 11
         let regex;
 
         switch (type) {
@@ -37,15 +34,26 @@ class SignUpForm extends Component {
             default: regex = /./
         }
 
+        value ?
+            event.target.classList.add('is-fill-input')
+        : event.target.classList.remove('is-fill-input')
+
         value
             .split('')
-            .every(letter => regex.test(letter)) && this.setState({
+            .every(letter => regex.test(letter)) && (numberTypeValidation || type !== 'number')
+            && this.setState({
                 ...this.state,
                 values: {
                     ...this.state.values,
                     [event.target.name]: value
                 }
-        })
+            }, () => event.target.name === 'country' && this.setState({
+                ...this.state,
+                values: {
+                    ...this.state.values,
+                    callingCode: document.querySelector('.calling-code').innerText
+                }
+            }))
     }
 
     isValid = event => {
@@ -60,20 +68,22 @@ class SignUpForm extends Component {
             }
         })
 
-        const immutableState = { ...this.state }
-        delete immutableState.errors[name];
+        if (name in this.state.errors) {
+            const immutableState = { ...this.state }
+            delete immutableState.errors[name];
 
-        this.setState({ immutableState })
+            this.setState({ immutableState })
+        }
     }
 
-    notValid = event => {
+    notValid = (event, errorMsg) => {
         const name = event.target.name;
 
         this.setState({
             ...this.state,
             errors: {
                 ...this.state.errors,
-                [name]: `Invalid ${name}`
+                [name]: errorMsg
             }
         })
     }
@@ -84,7 +94,7 @@ class SignUpForm extends Component {
 
         value && (
             regex ? this.isValid(event)
-                : this.notValid(event)
+                : this.notValid(event, 'Invalid Mail')
        )
     }
 
@@ -93,26 +103,14 @@ class SignUpForm extends Component {
         const currentYear = new Date().getFullYear();
         const inputYear = value.split('-')[0]
 
-        if (inputYear > currentYear || inputYear < 1900) {
-            this.setState({
-                ...this.state,
-                errors: {
-                    ...this.state.errors,
-                    [event.target.name]: 'Invalid year ' +  inputYear
-                }
-            })
+        console.log(this.state.values.birthDate)
 
+        if (inputYear > currentYear || inputYear < 1900) {
+            this.notValid(event, 'Invalid Date');
             return
         }
 
-        this.setState({
-            ...this.state,
-            values: {
-                ...this.state.values,
-                [event.target.name]: value 
-            }
-        })
-        
+        this.isValid(event)
     }
 
     /**
@@ -155,8 +153,10 @@ class SignUpForm extends Component {
                 <Form
                     values={this.state.values}
                     handleChange={this.handleChange}
+                    handleDate={this.handleDate}
                     handleMail={this.handleMail}
                     handleBlur={this.handleBlur}
+                    countries={this.state.countries}
                     agree={this.state.agreement}
                 />
             </div>
