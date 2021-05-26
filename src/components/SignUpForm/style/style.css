@@ -24,20 +24,18 @@
 }
 
 form {
-  max-width: 70em;
   background: var(--form-bg-color);
   padding: 1.5em 1.2em;
 
   border-radius: 1em;
 }
 
-.text-group,
-.gender {
+.text-group {
   position: relative;
-  margin-bottom: 10px;
 }
 
-.text-input {
+.text-input,
+select {
   color: rgba(0, 0, 0, 0.8);
   background: transparent;
 
@@ -65,11 +63,12 @@ form {
   transition: all 200ms ease;
 }
 
-.text-input-focused {
+.text-input:focus {
   transform: scale(1.02);
 }
 
-.text-input-focused ~ label {
+.text-input-focused ~ label,
+.birth-date > input ~ label {
   color: var(--primary-color);
   font-size: 12px;
   background: var(--form-bg-color);
@@ -84,6 +83,14 @@ form {
 
 .text-input-error-focused ~ label {
   color: var(--error-color);
+}
+
+.is-fill-input {
+  border-color: #27ae60;
+}
+
+.is-fill-input ~ label {
+  color: #27ae60;
 }
 
 .names,
@@ -144,7 +151,7 @@ form {
   border-radius: 50%;
   margin-right: 0.375em;
   transition: 0.25s ease;
-  box-shadow: inset 0 0 0 0.125em #00005c;
+  box-shadow: inset 0 0 0 0.15em var(--primary-color);
 }
 
 .names > * ~ * {
@@ -168,4 +175,46 @@ form {
 
 .radio-input ~ label {
   margin-left: 0.3em;
+}
+
+select {
+  width: 100%;
+  cursor: pointer;
+}
+
+select > option {
+  font-size: 1.2em;
+  padding: 0.5em 0.8em;
+}
+
+form > * ~ * {
+  margin-top: 15px;
+}
+
+.phone-input {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.phone-group {
+  width: 78%;
+}
+
+.phone-group > input,
+.birth-date > input {
+  width: 100%;
+}
+
+.calling-code {
+  display: inline-block;
+  width: 18%;
+
+  padding: 2.5px;
+  border: 2.5px solid var(--primary-color);
+  border-radius: 0.3em;
+}
+
+.disabled {
+  cursor: not-allowed;
 }

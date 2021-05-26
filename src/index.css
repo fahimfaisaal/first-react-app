@@ -20,11 +20,16 @@ code {
   font-size: 1.2em;
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: none;
 }
 
 @import url("./components/SignUpForm/style/style.css");
+
+#root {
+  overflow: hidden;
+}
 
 /* 
 #root {
