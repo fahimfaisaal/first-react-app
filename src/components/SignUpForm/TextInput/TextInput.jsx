@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
 const TextInput = props => (
-    <div className={`text-group${props.groupClass ? ' ' + props.groupClass : ''}`}>
+    <div className={`text-group${props.groupClass && ' ' + props.groupClass}`}>
         <input
             type={props.type}
             name={props.name}
             id={props.name}
-            className={`text-input${props.inputClass ? ' ' + props.inputClass : ''}${props.isDisabled ? ' disabled' : ''}`}
+            className={`text-input${props.inputClass && ' ' + props.inputClass}${props.isDisabled ? ' disabled' : ''}`}
             value={props.value}
             onChange={props.handleChange}
             onBlur={props.handleBlur}
@@ -28,7 +28,7 @@ TextInput.propTypes = {
     label: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     isDisabled: PropTypes.bool.isRequired,
     errorMessage: PropTypes.string.isRequired,
     inputClass: PropTypes.string,
@@ -41,10 +41,11 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
     label: '',
     type: 'text',
-    isDisabled: false,
+    groupClass: '',
     inputClass: '',
     fontClass: '',
-    errorMessage: ''
+    errorMessage: '',
+    isDisabled: false
 }
 
 export default TextInput;

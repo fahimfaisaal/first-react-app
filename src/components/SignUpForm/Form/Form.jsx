@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import RadioInput from '../RadioInput/RadioInput';
 import SelectInput from '../SelectInput/SelectInput';
+import Status from '../Status/Status';
 import TextInput from '../TextInput/TextInput';
 import Util from '../Util';
 
@@ -9,6 +10,12 @@ class Form extends Component {
     state = {
         loading: true,
         callingCodes: {}
+    }
+
+    genderEmojis = {
+        male: '👳🏻‍♂️',
+        female: '🧕🏻',
+        other: '😶'
     }
 
     async componentDidMount() {
@@ -27,8 +34,8 @@ class Form extends Component {
     }
 
     render() {
-        const { values, agree, handleChange, handleDate, handleMail } = this.props;
-
+        const { values, agree, handleChange, handleDate, handleMail, handleCheck } = this.props;
+        console.log(agree)
         return (
             <form>
                 <h2 className="header">Sign Up</h2>
@@ -58,24 +65,66 @@ class Form extends Component {
                     handleBlur={(values.birthDate !== '') ? handleDate : null}
                 />
 
+                 <div className="gender">     
+                    <div className="gender-items">
+                        <RadioInput
+                            name="gender"
+                            value="Male"
+                            label="Male"
+                            onChange={handleChange}
+                        />
+                        <RadioInput
+                            name="gender"
+                            value="Female"
+                            label="Female"
+                            onChange={handleChange}
+                        />
+                        <RadioInput 
+                            name="gender" 
+                            value="Other" 
+                            label="Other" 
+                            onChange={handleChange}
+                        />
+                    </div>
+                    
+                    <Status
+                        className="gender-status"
+                        value={
+                            values.gender ?
+                                this.genderEmojis[values.gender.toLowerCase()]
+                                : '----'
+                        }
+                    />
+                </div>
+
                 {!this.state.loading &&
                     <SelectInput
                     name="country"
+                    className="select-country"
                     options={Object.keys(this.state.callingCodes)}
                     handleChange={handleChange}
+                    isDisabled={!Util.trueFalse(values.gender)}
                     />
                 }
 
                 <div className="phone-input">
-                    <span className="calling-code">{values.country ? this.state.callingCodes[values.country] : '+' }</span>
+                    <Status
+                        className="calling-code"
+                        value={
+                            values.country ?
+                                this.state.callingCodes[values.country]
+                                : '----'
+                        }
+                    />
+
                     <TextInput
                         type="number"
                         label="Phone"
                         name="phone"
                         groupClass="phone-group"
                         value={values.phone}
-                        isDisabled={!Util.trueFalse(values.country)}
                         handleChange={handleChange}
+                        isDisabled={!Util.trueFalse(values.country)}
                     />
                 </div>
 
@@ -86,15 +135,43 @@ class Form extends Component {
                     value={values.mail}
                     handleChange={handleChange}
                     handleBlur={handleMail}
+                    isDisabled={!Util.trueFalse(values.phone)}
                 />
-                 
-                <div className="gender">
-                    <p>Gender :</p>
-                    <RadioInput name="gender" value="Male" label="Male" onChange={handleChange}/>
-                    <RadioInput name="gender" value="Female" label="Female" onChange={handleChange}/>
-                    <RadioInput name="gender" value="Other" label="Other" onChange={handleChange}/>
+
+                <div className="password">
+                    <TextInput
+                        type="password"
+                        name="password"
+                        label="Password"
+                        value={values.password}
+                        handleChange={handleChange}
+                        isDisabled={!Util.trueFalse(values.mail)}
+                    />
+                    <TextInput
+                        type="password"
+                        name="confirmPassword"
+                        label="Confirm password"
+                        handleChange={handleChange}
+                        isDisabled={
+                            !(Util.trueFalse(values.mail) && Util.trueFalse(values.password))
+                        }
+                    />
                 </div>
 
+                <div className="agreement">
+                    <label className="checkbox bounce">
+                        <input
+                            type="checkbox"
+                            name="agreement"
+                            onChange={handleCheck}
+                        />
+                        <svg viewBox="0 0 21 21">
+                            <polyline points="5 10.75 8.5 14.25 16 6"></polyline>
+                        </svg>
+                    </label>
+                    <label className={!agree ? 'agreement-unchecked-label' : ''}>I accept terms and conditions</label>
+                </div>
+                
                 <button type="submit" disabled={!agree}>Submit</button>
             </form>
         )

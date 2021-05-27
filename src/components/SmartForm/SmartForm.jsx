@@ -89,7 +89,7 @@ class SmartForm extends Component {
         }, () => !value && alert('Invalid Date!'))
     }
 
-    sObject(val) {
+    isObject(val) {
         const type = typeof val;
   
         if (val === null) {

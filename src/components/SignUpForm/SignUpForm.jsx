@@ -12,12 +12,17 @@ class SignUpForm extends Component {
             country: '',
             callingCode: '',
             phone: '',
-            zipCode: '',
             mail: '',
             password: '',
         },
         agreement: false,
         errors: {}
+    }
+
+    fillInput(event, value) {
+        value ?
+            event.target.classList.add('is-fill-input')
+        : event.target.classList.remove('is-fill-input')
     }
 
     handleChange = event => {
@@ -34,9 +39,7 @@ class SignUpForm extends Component {
             default: regex = /./
         }
 
-        value ?
-            event.target.classList.add('is-fill-input')
-        : event.target.classList.remove('is-fill-input')
+        this.fillInput(event, value);
 
         value
             .split('')
@@ -92,6 +95,8 @@ class SignUpForm extends Component {
         const value = event.target.value;
         const regex = /^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/.test(value);
 
+        this.fillInput(event, value);
+
         value && (
             regex ? this.isValid(event)
                 : this.notValid(event, 'Invalid Mail')
@@ -103,10 +108,11 @@ class SignUpForm extends Component {
         const currentYear = new Date().getFullYear();
         const inputYear = value.split('-')[0]
 
-        console.log(this.state.values.birthDate)
+        this.fillInput(event, value);
 
         if (inputYear > currentYear || inputYear < 1900) {
             this.notValid(event, 'Invalid Date');
+            
             return
         }
 
@@ -147,6 +153,13 @@ class SignUpForm extends Component {
         return splitPass;
     }
 
+    handleCheck = event => {
+        const isChecked = event.target.checked;
+        const name = event.target.name;
+
+        this.setState({[name]: isChecked}, () => console.log(this.state.agreement))
+    }
+
     render() {
         return (
             <div className="container">
@@ -157,6 +170,7 @@ class SignUpForm extends Component {
                     handleMail={this.handleMail}
                     handleBlur={this.handleBlur}
                     countries={this.state.countries}
+                    handleCheck={this.handleCheck}
                     agree={this.state.agreement}
                 />
             </div>
