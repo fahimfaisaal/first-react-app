@@ -15,7 +15,7 @@ body {
 
 form {
   background: var(--form-bg-color);
-  padding: 1.5em 2em;
+  padding: 1em 2.5em 1.6em;
 
   border-radius: 1em;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -34,6 +34,10 @@ select {
   cursor: pointer;
 }
 
+::marker {
+  content: "✔";
+}
+
 .container {
   height: 100vh;
 
@@ -42,7 +46,6 @@ select {
   align-items: center;
 
   padding: 1.2em 1.5em;
-  transform: scale(1.2);
 }
 
 .header {
@@ -223,6 +226,43 @@ select {
   right: 0;
 }
 
+.password-strength {
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+}
+
+.password-strength > .status {
+  font-size: 15px;
+  width: 20%;
+
+  transition: all 350ms ease;
+}
+
+/* password strength status */
+
+.low {
+  color: #e84118;
+  border-color: inherit;
+}
+
+.strength-condition {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  width: 75%;
+}
+
+.strength-condition > * {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.2);
+  transition: color 350ms ease;
+}
+
+.fill-pass-condition {
+  color: var(--fill-color);
+}
 /* agreement */
 .agreement {
   display: flex;
