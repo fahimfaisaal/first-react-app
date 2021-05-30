@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Form from './Form/Form';
-// import Util from './Util';
+import Util from './Util';
 
 class SignUpForm extends Component {
     state = {
@@ -15,6 +15,15 @@ class SignUpForm extends Component {
             mail: '',
             password: '',
         },
+        passwordStrengthStatus: '',
+        strongPassItems: [],
+        strongPassDetections: {
+            length: false,
+            uppercase: false,
+            lowercase: false,
+            digit: false,
+            specialChar: false
+        },
         agreement: false,
         errors: {}
     }
@@ -25,6 +34,55 @@ class SignUpForm extends Component {
         : event.target.classList.remove('is-fill-input')
     }
 
+    passController(strongPassDetections) {
+        const strongPassItems = [...Object.keys(strongPassDetections)]
+            .reduce((matches, value) => {
+                if (Util.trueFalse(
+                    strongPassDetections[value]
+                )) {
+                    matches.push(value);
+                }
+                return matches;
+            }, []);
+        
+        const matchLength = strongPassItems.length;
+        let passwordStrengthStatus = ['', 'low', 'week', 'medium', 'strong', 'super'];
+        
+        const passLength = this.state.values.password.length;
+        
+        if (passLength > 10 && matchLength !== 5) {
+            passwordStrengthStatus = passwordStrengthStatus[4];
+        } else {
+            passwordStrengthStatus = passwordStrengthStatus[matchLength];
+        }
+
+        this.setState({ passwordStrengthStatus, strongPassItems,  strongPassDetections});
+    }
+
+    handlePass = event => {
+        const password = event.target.value;
+
+        this.setState({
+            ...this.state,
+            values: {
+                ...this.state.values,
+                password
+            }
+        })
+
+        const splitPass = Util.splitString(password);
+
+        const strongPassDetections = {
+            length: splitPass.length > 7 ? true : false,
+            uppercase: Util.trueFalse(splitPass.uppercase),
+            lowercase: Util.trueFalse(splitPass.lowercase),
+            digit: Util.trueFalse(splitPass.digit),
+            specialChar: Util.trueFalse(splitPass.specialChar)
+        }
+
+        this.passController(strongPassDetections);
+    }
+
     handleChange = event => {
         const value = event.target.value;
         const type = event.target.type;
@@ -32,23 +90,21 @@ class SignUpForm extends Component {
         let regex;
 
         switch (type) {
-            case 'text': regex = /[a-z]/i;
+            case 'text': regex = /[^a-z]/i;
                 break;
-            case 'number': regex = /[0-9]/;
+            case 'number': regex = /[^0-9]/;
                 break;
-            default: regex = /./
+            default: regex = /[^\s\S]/
         }
 
         this.fillInput(event, value);
 
-        value
-            .split('')
-            .every(letter => regex.test(letter)) && (numberTypeValidation || type !== 'number')
-            && this.setState({
+        if (numberTypeValidation || type !== 'number')
+            this.setState({
                 ...this.state,
                 values: {
                     ...this.state.values,
-                    [event.target.name]: value
+                    [event.target.name]: value.replace(regex, '')
                 }
             }, () => event.target.name === 'country' && this.setState({
                 ...this.state,
@@ -93,12 +149,12 @@ class SignUpForm extends Component {
 
     handleMail = event => {
         const value = event.target.value;
-        const regex = /^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/.test(value);
+        const mailRegExp = /^[a-z0-9](\.?[a-z0-9]){5,}@g(oogle)?mail\.com$/.test(value);
 
         this.fillInput(event, value);
 
         value && (
-            regex ? this.isValid(event)
+            mailRegExp ? this.isValid(event)
                 : this.notValid(event, 'Invalid Mail')
        )
     }
@@ -119,45 +175,11 @@ class SignUpForm extends Component {
         this.isValid(event)
     }
 
-    /**
-     * Split the password
-     * @param {String} pass
-     * @param {String} action 
-     * @param {function} conditionCB 
-     * @returns {Object}
-     */
-    splitPassword([...pass], action, conditionCB) {
-        const splitPass = {
-            length: 0,
-            [action]: []
-        }
-
-        pass
-            .reduce((obj, letter) => {
-                if (conditionCB(letter)) {
-                    obj[action].push(letter)
-                }
-
-                return obj;
-            }, splitPass)
-
-        splitPass.length = splitPass[action].length;
-        splitPass[action] = splitPass[action].sort((a, b) => {
-            if (a > b) {
-                return 1;
-            }
-
-            return -1;
-        }).join('');
-        
-        return splitPass;
-    }
-
     handleCheck = event => {
         const isChecked = event.target.checked;
         const name = event.target.name;
 
-        this.setState({[name]: isChecked}, () => console.log(this.state.agreement))
+        this.setState({[name]: isChecked})
     }
 
     render() {
@@ -165,12 +187,15 @@ class SignUpForm extends Component {
             <div className="container">
                 <Form
                     values={this.state.values}
+                    passwordStrengthStatus={this.state.passwordStrengthStatus}
+                    passDetections={this.state.strongPassDetections}
                     handleChange={this.handleChange}
                     handleDate={this.handleDate}
                     handleMail={this.handleMail}
                     handleBlur={this.handleBlur}
                     countries={this.state.countries}
                     handleCheck={this.handleCheck}
+                    handlePass={this.handlePass}
                     agree={this.state.agreement}
                 />
             </div>

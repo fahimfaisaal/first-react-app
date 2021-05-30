@@ -34,8 +34,18 @@ class Form extends Component {
     }
 
     render() {
-        const { values, agree, handleChange, handleDate, handleMail, handleCheck } = this.props;
-        console.log(agree)
+        const { 
+            values,
+            agree,
+            handleChange,
+            handleDate,
+            handleMail,
+            handlePass,
+            passwordStrengthStatus,
+            passDetections,
+            handleCheck
+        } = this.props;
+        
         return (
             <form>
                 <h2 className="header">Sign Up</h2>
@@ -144,7 +154,7 @@ class Form extends Component {
                         name="password"
                         label="Password"
                         value={values.password}
-                        handleChange={handleChange}
+                        handleChange={handlePass}
                         isDisabled={!Util.trueFalse(values.mail)}
                     />
                     <TextInput
@@ -156,6 +166,24 @@ class Form extends Component {
                             !(Util.trueFalse(values.mail) && Util.trueFalse(values.password))
                         }
                     />
+                </div>
+
+                <div className="password-strength">
+                    <Status
+                        value={
+                            values.password && passwordStrengthStatus ?
+                                passwordStrengthStatus
+                                : '----'
+                        }
+                        className={passwordStrengthStatus}
+                    />
+
+                    <ul className="strength-condition">
+                        <li className={`uppercase ${passDetections.uppercase ? 'fill-pass-condition' : ''}`}>uppercase</li>
+                        <li className={`lowercase ${passDetections.lowercase ? 'fill-pass-condition' : ''}`}>lowercase</li>
+                        <li className={`digit ${passDetections.digit ? 'fill-pass-condition' : ''}`}>digit</li>
+                        <li className={`symbol ${passDetections.specialChar ? 'fill-pass-condition' : ''}`}>symbol</li>
+                    </ul>
                 </div>
 
                 <div className="agreement">
