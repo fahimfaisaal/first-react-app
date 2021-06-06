@@ -36,14 +36,15 @@ class Form extends Component {
     render() {
         const { 
             values,
-            agree,
+            passwordStrengthStatus,
+            strongPassStrength,
             handleChange,
             handleDate,
             handleMail,
             handlePass,
-            passwordStrengthStatus,
-            passDetections,
-            handleCheck
+            handleConfirmPass,
+            handleCheck,
+            agree
         } = this.props;
         
         return (
@@ -109,11 +110,11 @@ class Form extends Component {
 
                 {!this.state.loading &&
                     <SelectInput
-                    name="country"
-                    className="select-country"
-                    options={Object.keys(this.state.callingCodes)}
-                    handleChange={handleChange}
-                    isDisabled={!Util.trueFalse(values.gender)}
+                        name="country"
+                        className="select-country"
+                        options={Object.keys(this.state.callingCodes)}
+                        handleChange={handleChange}
+                        isDisabled={!Util.trueFalse(values.gender)}
                     />
                 }
 
@@ -162,6 +163,7 @@ class Form extends Component {
                         name="confirmPassword"
                         label="Confirm password"
                         handleChange={handleChange}
+                        handleBlur={handleConfirmPass}
                         isDisabled={
                             !(Util.trueFalse(values.mail) && Util.trueFalse(values.password))
                         }
@@ -179,10 +181,10 @@ class Form extends Component {
                     />
 
                     <ul className="strength-condition">
-                        <li className={`uppercase ${passDetections.uppercase ? 'fill-pass-condition' : ''}`}>uppercase</li>
-                        <li className={`lowercase ${passDetections.lowercase ? 'fill-pass-condition' : ''}`}>lowercase</li>
-                        <li className={`digit ${passDetections.digit ? 'fill-pass-condition' : ''}`}>digit</li>
-                        <li className={`symbol ${passDetections.specialChar ? 'fill-pass-condition' : ''}`}>symbol</li>
+                        <li className={`uppercase ${strongPassStrength.includes('uppercase') ? 'fill-pass-condition' : ''}`}>uppercase</li>
+                        <li className={`lowercase ${strongPassStrength.includes('lowercase') ? 'fill-pass-condition' : ''}`}>lowercase</li>
+                        <li className={`digit ${strongPassStrength.includes('digit') ? 'fill-pass-condition' : ''}`}>digit</li>
+                        <li className={`symbol ${strongPassStrength.includes('specialChar') ? 'fill-pass-condition' : ''}`}>symbol</li>
                     </ul>
                 </div>
 
@@ -197,6 +199,7 @@ class Form extends Component {
                             <polyline points="5 10.75 8.5 14.25 16 6"></polyline>
                         </svg>
                     </label>
+
                     <label className={!agree ? 'agreement-unchecked-label' : ''}>I accept terms and conditions</label>
                 </div>
                 
@@ -209,9 +212,14 @@ class Form extends Component {
 Form.propTypes = {
     values: PropTypes.object.isRequired,
     agree: PropTypes.bool.isRequired,
+    passwordStrengthStatus: PropTypes.string.isRequired,
+    strongPassStrength: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired,
     handleBlur: PropTypes.func,
     handleMail: PropTypes.func,
+    handlePass: PropTypes.func.isRequired,
+    handleConfirmPass: PropTypes.func.isRequired,
+    handleCheck: PropTypes.func.isRequired
 }
 
 export default Form;

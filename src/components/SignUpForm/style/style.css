@@ -246,6 +246,27 @@ select {
   border-color: inherit;
 }
 
+.week {
+  color: #f39c12;
+  border-color: inherit;
+}
+
+.medium {
+  color: #e1b12c;
+  border-color: inherit;
+}
+
+.strong {
+  color: #27ae60;
+  border-color: inherit;
+}
+
+.super {
+  color: #16a085;
+  font-weight: bold;
+  border-color: inherit;
+}
+
 .strength-condition {
   display: flex;
   justify-content: space-between;

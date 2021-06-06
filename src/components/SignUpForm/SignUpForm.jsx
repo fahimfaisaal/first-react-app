@@ -16,14 +16,7 @@ class SignUpForm extends Component {
             password: '',
         },
         passwordStrengthStatus: '',
-        strongPassItems: [],
-        strongPassDetections: {
-            length: false,
-            uppercase: false,
-            lowercase: false,
-            digit: false,
-            specialChar: false
-        },
+        strongPassStrength: [],
         agreement: false,
         errors: {}
     }
@@ -35,17 +28,10 @@ class SignUpForm extends Component {
     }
 
     passController(strongPassDetections) {
-        const strongPassItems = [...Object.keys(strongPassDetections)]
-            .reduce((matches, value) => {
-                if (Util.trueFalse(
-                    strongPassDetections[value]
-                )) {
-                    matches.push(value);
-                }
-                return matches;
-            }, []);
+        const strongPassStrength = [...Object.keys(strongPassDetections)]
+            .filter(values => strongPassDetections[values] === true);
         
-        const matchLength = strongPassItems.length;
+        const matchLength = strongPassStrength.length;
         let passwordStrengthStatus = ['', 'low', 'week', 'medium', 'strong', 'super'];
         
         const passLength = this.state.values.password.length;
@@ -56,7 +42,7 @@ class SignUpForm extends Component {
             passwordStrengthStatus = passwordStrengthStatus[matchLength];
         }
 
-        this.setState({ passwordStrengthStatus, strongPassItems,  strongPassDetections});
+        this.setState({ passwordStrengthStatus, strongPassStrength });
     }
 
     handlePass = event => {
@@ -81,6 +67,7 @@ class SignUpForm extends Component {
         }
 
         this.passController(strongPassDetections);
+        this.fillInput(event, password)
     }
 
     handleChange = event => {
@@ -92,7 +79,7 @@ class SignUpForm extends Component {
         switch (type) {
             case 'text': regex = /[^a-z]/i;
                 break;
-            case 'number': regex = /[^0-9]/;
+            case 'number': regex = /[\D]/;
                 break;
             default: regex = /[^\s\S]/
         }
@@ -113,6 +100,16 @@ class SignUpForm extends Component {
                     callingCode: document.querySelector('.calling-code').innerText
                 }
             }))
+    }
+
+    handleConfirmPass = event => {
+        const password = this.state.values.password;
+        const confirmPassword = event.target.value;
+
+        if (password !== confirmPassword) {
+            this.notValid(event, "Password doesn't match!", () => console.log(this.state.errors));
+        }
+
     }
 
     isValid = event => {
@@ -183,20 +180,29 @@ class SignUpForm extends Component {
     }
 
     render() {
+        const {
+            values,
+            passwordStrengthStatus,
+            strongPassStrength,
+            countries,
+            agreement
+        } = this.state;
+
         return (
             <div className="container">
                 <Form
-                    values={this.state.values}
-                    passwordStrengthStatus={this.state.passwordStrengthStatus}
-                    passDetections={this.state.strongPassDetections}
+                    values={values}
+                    passwordStrengthStatus={passwordStrengthStatus}
+                    strongPassStrength={strongPassStrength}
+                    countries={countries}
+                    agree={agreement}
                     handleChange={this.handleChange}
                     handleDate={this.handleDate}
                     handleMail={this.handleMail}
                     handleBlur={this.handleBlur}
-                    countries={this.state.countries}
                     handleCheck={this.handleCheck}
                     handlePass={this.handlePass}
-                    agree={this.state.agreement}
+                    handleConfirmPass={this.handleConfirmPass}
                 />
             </div>
         )
